@@ -10,15 +10,27 @@ import UIKit
 
 class ViewController: UIViewController {
                             
+//    @IBOutlet weak var numberOfFishSliderLabel: UILabel!
+    
+    @IBOutlet weak var numberOfFishSliderLabel: UILabel!
+    @IBOutlet weak var numberOfFishSlider: UISlider!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
-        
+        refreshUI()
+    }
+    
+    @IBAction func numberOfFishSliderChanged(sender: AnyObject) {
+        refreshUI()
+    }
+    func refreshUI(){
+        let numberOfFishSliderValue = Int(self.numberOfFishSlider.value)
+        numberOfFishSliderLabel.text = "\(numberOfFishSliderValue) Fish"
     }
     
     @IBAction func animateButtonPressed(sender: AnyObject) {
-        for loopNumber in 0...10{
+        let numberOfFish = Int(self.numberOfFishSlider.value)
+        for loopNumber in 0...numberOfFish{
             //let size be a random number between 20 and 60
             let size : CGFloat = CGFloat(Int(rand()) % 40 + 20.0)
             
@@ -28,7 +40,7 @@ class ViewController: UIViewController {
             // create the fish and add it to the screen
             let fish = UIImageView()
             fish.image = UIImage(named: "fish_toothy_blue.png")
-            fish.frame = CGRect(x: 0, y: yPosition, width: size, height: size)
+            fish.frame = CGRect(x: (0 - size), y: yPosition, width: size, height: size)
             self.view.addSubview(fish)
             
             //create and add a new square
@@ -47,7 +59,10 @@ class ViewController: UIViewController {
 //            self.view.addSubview(coloredSquare)
             
             let duration = 1.0
-            let delay = 0.0
+            
+            // delay be random value between .9 and 1.0
+            let delay = NSTimeInterval(((Int(rand())) % 900) + 100.0) / 1000.0
+            
             let options = UIViewAnimationOptions.CurveLinear
             
             UIView.animateWithDuration(duration, delay: delay, options: options, animations: {
@@ -58,7 +73,7 @@ class ViewController: UIViewController {
                 the square
                 better to put the math to remember what's happening
                 */
-                fish.frame = CGRect(x: (self.getScreenWidth()-size), y: yPosition, width: size, height: size)
+                fish.frame = CGRect(x: (self.getScreenWidth()), y: yPosition, width: size, height: size)
                 }, completion: { finished in
                     fish.removeFromSuperview()
             })
